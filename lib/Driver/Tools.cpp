@@ -2877,6 +2877,10 @@ collectSanitizerRuntimes(const ToolChain &TC, const ArgList &Args,
     if (SanArgs.linkCXXRuntimes())
       StaticRuntimes.push_back("ubsan_standalone_cxx");
   }
+  // FIXME: generalize "Sanitizer" name in these funcs?
+  if (Args.hasFlag(options::OPT_fdead_store_tuner,
+                   options::OPT_fno_dead_store_tuner, false))
+    StaticRuntimes.push_back("dstune");
   if (SanArgs.needsStatsRt()) {
     NonWholeStaticRuntimes.push_back("stats");
     RequiredSymbols.push_back("__sanitizer_stats_register");
@@ -4664,6 +4668,10 @@ void Clang::ConstructJob(Compilation &C, const JobAction &JA,
 
   const SanitizerArgs &Sanitize = getToolChain().getSanitizerArgs();
   Sanitize.addArgs(getToolChain(), Args, CmdArgs, InputType);
+
+  if (Args.hasFlag(options::OPT_fdead_store_tuner,
+                   options::OPT_fno_dead_store_tuner, false))
+    CmdArgs.push_back("-fdead-store-tuner");
 
   // Report an error for -faltivec on anything other than PowerPC.
   if (const Arg *A = Args.getLastArg(options::OPT_faltivec)) {

@@ -650,6 +650,10 @@ def fsanitize_stats : Flag<["-"], "fsanitize-stats">,
 def fno_sanitize_stats : Flag<["-"], "fno-sanitize-stats">,
                                  Group<f_clang_Group>, Flags<[CC1Option]>,
                                  HelpText<"Disable sanitizer statistics gathering.">;
+def fdead_store_tuner : Flag<["-"], "fdead-store-tuner">, Group<f_Group>,
+  Flags<[CC1Option]>, HelpText<"Enable dead store tuning instrumentation.">;
+def fno_dead_store_tuner : Flag<["-"], "fno-dead-store-tuner">, Group<f_Group>,
+  Flags<[CC1Option]>, HelpText<"Disable dead store tuning instrumentation.">;
 def funsafe_math_optimizations : Flag<["-"], "funsafe-math-optimizations">,
   Group<f_Group>;
 def fno_unsafe_math_optimizations : Flag<["-"], "fno-unsafe-math-optimizations">,

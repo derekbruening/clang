@@ -135,6 +135,8 @@ CODEGENOPT(SanitizeCoverageTraceCmp, 1, 0) ///< Enable cmp instruction tracing
 CODEGENOPT(SanitizeCoverage8bitCounters, 1, 0) ///< Use 8-bit frequency counters
                                                ///< in sanitizer coverage.
 CODEGENOPT(SanitizeStats     , 1, 0) ///< Collect statistics for sanitizers.
+CODEGENOPT(DeadStoreTuner    , 1, 0) ///< Insert dead store detection
+                                     ///< instrumentation.
 CODEGENOPT(SimplifyLibCalls  , 1, 1) ///< Set when -fbuiltin is enabled.
 CODEGENOPT(SoftFloat         , 1, 0) ///< -soft-float.
 CODEGENOPT(StrictEnums       , 1, 0) ///< Optimize based on strict enum definition.

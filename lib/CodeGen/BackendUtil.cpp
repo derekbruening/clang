@@ -243,6 +243,11 @@ static void addDataFlowSanitizerPass(const PassManagerBuilder &Builder,
   PM.add(createDataFlowSanitizerPass(LangOpts.SanitizerBlacklistFiles));
 }
 
+static void addDeadStoreTunerPass(const PassManagerBuilder &Builder,
+                                  legacy::PassManagerBase &PM) {
+  PM.add(createDeadStoreTunerPass());
+}
+
 static TargetLibraryInfoImpl *createTLII(llvm::Triple &TargetTriple,
                                          const CodeGenOptions &CodeGenOpts) {
   TargetLibraryInfoImpl *TLII = new TargetLibraryInfoImpl(TargetTriple);
@@ -399,6 +404,13 @@ void EmitAssemblyHelper::CreatePasses(FunctionInfoIndex *FunctionIndex) {
                            addDataFlowSanitizerPass);
     PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
                            addDataFlowSanitizerPass);
+  }
+
+  if (CodeGenOpts.DeadStoreTuner) {
+    PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+                           addDeadStoreTunerPass);
+    PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+                           addDeadStoreTunerPass);
   }
 
   // Set up the per-function pass manager.
