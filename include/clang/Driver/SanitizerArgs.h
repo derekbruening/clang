@@ -58,6 +58,7 @@ class SanitizerArgs {
   bool needsCfiRt() const;
   bool needsCfiDiagRt() const;
   bool needsStatsRt() const { return Stats; }
+  bool needsCfsanRt() const { return Sanitizers.has(SanitizerKind::CacheFrag); }
 
   bool requiresPIE() const;
   bool needsUnwindTables() const;

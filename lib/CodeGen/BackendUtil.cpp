@@ -245,6 +245,11 @@ static void addDataFlowSanitizerPass(const PassManagerBuilder &Builder,
   PM.add(createDataFlowSanitizerPass(LangOpts.SanitizerBlacklistFiles));
 }
 
+static void addCacheFragSanitizerPass(const PassManagerBuilder &Builder,
+                                      legacy::PassManagerBase &PM) {
+  PM.add(createCacheFragSanitizerPass());
+}
+
 static TargetLibraryInfoImpl *createTLII(llvm::Triple &TargetTriple,
                                          const CodeGenOptions &CodeGenOpts) {
   TargetLibraryInfoImpl *TLII = new TargetLibraryInfoImpl(TargetTriple);
@@ -402,6 +407,13 @@ void EmitAssemblyHelper::CreatePasses(ModuleSummaryIndex *ModuleSummary) {
                            addDataFlowSanitizerPass);
     PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
                            addDataFlowSanitizerPass);
+  }
+
+  if (LangOpts.Sanitize.has(SanitizerKind::CacheFrag)) {
+    PMBuilder.addExtension(PassManagerBuilder::EP_OptimizerLast,
+                           addCacheFragSanitizerPass);
+    PMBuilder.addExtension(PassManagerBuilder::EP_EnabledOnOptLevel0,
+                           addCacheFragSanitizerPass);
   }
 
   // Set up the per-function pass manager.
